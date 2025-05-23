@@ -3,64 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Météo</title>
+    <title>Instant Weather V2</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="conteneur">
-        <h1>Météo par Commune</h1>
-        
-        <form id="formulaire-meteo">
-            <div class="groupe-formulaire">
-                <label for="code-postal">Code Postal :</label>
-                <input type="text" id="code-postal" name="code-postal" placeholder="Entrez un code postal" pattern="[0-9]{5}" required>
-                <small id="indication-code-postal" class="indication">Format : 5 chiffres</small>
-            </div>
+    <div class="header">
+        <h1>Instant Weather V2</h1>
+        <button class="dark-mode-toggle" id="dark-mode-toggle">🌙 Mode Sombre</button>
+    </div>
 
-            <div class="groupe-formulaire">
-                <label for="selection-commune">Commune :</label>
-                <select id="selection-commune" name="commune" required disabled>
-                    <option value="">Sélectionnez une commune</option>
-                </select>
+    <div class="conteneur">
+        <form id="formulaire-meteo">
+            <div class="formulaire-container">
+                <div class="section-principale">
+                    <h3 class="section-titre">Localisation</h3>
+                    
+                    <div class="groupe-formulaire">
+                        <label for="code-postal">Code Postal :</label>
+                        <input type="text" id="code-postal" name="code-postal" placeholder="Entrez un code postal" pattern="[0-9]{5}" required>
+                        <small id="indication-code-postal" class="indication">Format : 5 chiffres</small>
+                    </div>
+
+                    <div class="groupe-formulaire">
+                        <label for="selection-commune">Commune :</label>
+                        <select id="selection-commune" name="commune" required disabled>
+                            <option value="">Sélectionnez une commune</option>
+                        </select>
+                    </div>
+
+                    <div class="groupe-formulaire">
+                        <label>Nombre de jours de prévision :</label>
+                        <div class="jours-selector">
+                            <button type="button" class="jour-btn active" data-jours="1">1</button>
+                            <button type="button" class="jour-btn" data-jours="2">2</button>
+                            <button type="button" class="jour-btn" data-jours="3">3</button>
+                            <button type="button" class="jour-btn" data-jours="4">4</button>
+                            <button type="button" class="jour-btn" data-jours="5">5</button>
+                            <button type="button" class="jour-btn" data-jours="6">6</button>
+                            <button type="button" class="jour-btn" data-jours="7">7</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-options">
+                    <h3 class="section-titre">Options d'affichage</h3>
+                    
+                    <div class="options-grid">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="option-latitude" name="options" value="latitude">
+                            <label for="option-latitude">Latitude décimale</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="option-longitude" name="options" value="longitude">
+                            <label for="option-longitude">Longitude décimale</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="option-cumul-pluie" name="options" value="cumul-pluie">
+                            <label for="option-cumul-pluie">Cumul de pluie (mm)</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="option-vent-moyen" name="options" value="vent-moyen">
+                            <label for="option-vent-moyen">Vent moyen (km/h)</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="option-direction-vent" name="options" value="direction-vent">
+                            <label for="option-direction-vent">Direction du vent (°)</label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <button type="submit" id="bouton-recherche" disabled>
-                Rechercher la météo
+                🔍 Rechercher la météo
             </button>
         </form>
 
-        <div id="resultats-meteo" class="conteneur-resultats">
-            <h2>Résultats météorologiques</h2>
-            
-            <div class="grille-resultats">
-                <div class="carte-resultat">
-                    <h3>Température Minimale</h3>
-                    <p id="temperature-minimale">-</p>
-                    <span class="unite">°C</span>
-                </div>
-
-                <div class="carte-resultat">
-                    <h3>Température Maximale</h3>
-                    <p id="temperature-maximale">-</p>
-                    <span class="unite">°C</span>
-                </div>
-
-                <div class="carte-resultat">
-                    <h3>Probabilité de Pluie</h3>
-                    <p id="probabilite-pluie">-</p>
-                    <span class="unite">%</span>
-                </div>
-
-                <div class="carte-resultat">
-                    <h3>Heures d'Ensoleillement</h3>
-                    <p id="heures-ensoleillement">-</p>
-                    <span class="unite">h</span>
-                </div>
+        <div id="resultats-container" class="resultats-container">
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Chargement des données météo...</p>
             </div>
+            
+            <div id="infos-commune" class="infos-commune" style="display: none;"></div>
+            <div id="previsions-grid" class="previsions-grid"></div>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
 </html>
-
-
