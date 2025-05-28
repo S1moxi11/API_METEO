@@ -63,7 +63,7 @@ function initializeApp() {
 function toggleDarkMode() {
     document.body.classList.toggle("dark-mode");
     const isDark = document.body.classList.contains("dark-mode");
-    document.getElementById("dark-mode-toggle").textContent = isDark ? "☀️ Mode Clair" : "🌙 Mode Sombre";
+    document.getElementById("dark-mode-toggle").textContent = isDark ? "☀️" : "🌙";
 }
 
 // Fonction asynchrone pour récupérer les communes à partir d'un code postal

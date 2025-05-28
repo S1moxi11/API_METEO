@@ -1,13 +1,13 @@
 :root {
-    --color-background: #0a1128;
+    --color-background: #1f2b53;
     --color-primary: #00a8e8;
     --color-secondary: #007ea7;
     --color-accent: #80ced6;
     --color-text: #f7f9fb;
-    --gradient-background: linear-gradient(45deg, #0a1128, #003459);
-    --dark-mode-bg: #1a1a1a;
+    --gradient-background: linear-gradient(45deg, #293d7e, #055e9e);
+    --dark-mode-bg: #333333;
     --dark-mode-primary: #4a90e2;
-}
+}dark-mode-toggle
 
 * {
     margin: 0;
@@ -50,17 +50,24 @@ body.dark-mode {
 }
 
 .dark-mode-toggle {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid var(--color-primary);
-    border-radius: 25px;
-    padding: 8px 16px;
+    border-radius: 15px;
+    padding: 0;
     color: var(--color-text);
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
 }
 
 .dark-mode-toggle:hover {
@@ -297,6 +304,13 @@ button:disabled {
     color: var(--color-primary);
     margin-bottom: 15px;
 }
+
+
+select option {
+    color: black !important;
+
+}
+
 
 .coords-grid {
     display: grid;
