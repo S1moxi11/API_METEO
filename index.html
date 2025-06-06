@@ -4,26 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instant Weather</title>
+    <!-- Lien vers la feuille de style CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- En-tête avec le titre de la page et le bouton de mode sombre -->
     <div class="header">
         <h1>Instant Weather</h1>
         <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
     </div>
 
     <div class="conteneur">
+        <!-- Formulaire principal de recherche météo -->
         <form id="formulaire-meteo">
             <div class="formulaire-container">
+                <!-- Section pour la saisie de la localisation -->
                 <div class="section-principale">
                     <h3 class="section-titre">Localisation</h3>
                     
+                    <!-- Champ pour le code postal -->
                     <div class="groupe-formulaire">
                         <label for="code-postal">Code Postal :</label>
                         <input type="text" id="code-postal" name="code-postal" placeholder="Entrez un code postal" pattern="[0-9]{5}" required>
                         <small id="indication-code-postal" class="indication">Format : 5 chiffres</small>
                     </div>
 
+                    <!-- Sélecteur de commune (activé dynamiquement après code postal valide) -->
                     <div class="groupe-formulaire">
                         <label for="selection-commune">Commune :</label>
                         <select id="selection-commune" name="commune" required disabled>
@@ -31,9 +37,11 @@
                         </select>
                     </div>
 
+                    <!-- Sélection du nombre de jours de prévision météo -->
                     <div class="groupe-formulaire">
                         <label>Nombre de jours de prévision :</label>
                         <div class="jours-selector">
+                            <!-- Boutons pour choisir le nombre de jours -->
                             <button type="button" class="jour-btn active" data-jours="1">1</button>
                             <button type="button" class="jour-btn" data-jours="2">2</button>
                             <button type="button" class="jour-btn" data-jours="3">3</button>
@@ -45,10 +53,12 @@
                     </div>
                 </div>
 
+                <!-- Section pour les options d'affichage supplémentaires -->
                 <div class="section-options">
                     <h3 class="section-titre">Options d'affichage</h3>
                     
                     <div class="options-grid">
+                        <!-- Cases à cocher pour afficher des données météo spécifiques -->
                         <div class="checkbox-group">
                             <input type="checkbox" id="option-latitude" name="options" value="latitude">
                             <label for="option-latitude">Latitude décimale</label>
@@ -77,22 +87,28 @@
                 </div>
             </div>
 
+            <!-- Bouton de soumission du formulaire (désactivé tant que tout n'est pas rempli) -->
             <button type="submit" id="bouton-recherche" disabled>
                 🔍 Rechercher la météo
             </button>
         </form>
 
+        <!-- Conteneur des résultats météo -->
         <div id="resultats-container" class="resultats-container">
+            <!-- Animation de chargement pendant la requête -->
             <div id="loading" class="loading" style="display: none;">
                 <div class="spinner"></div>
                 <p>Chargement des données météo...</p>
             </div>
             
+            <!-- Informations sur la commune sélectionnée -->
             <div id="infos-commune" class="infos-commune" style="display: none;"></div>
+            <!-- Affichage des prévisions météo -->
             <div id="previsions-grid" class="previsions-grid"></div>
         </div>
     </div>
 
+    <!-- Inclusion du script JavaScript -->
     <script src="app.js"></script>
 </body>
 </html>

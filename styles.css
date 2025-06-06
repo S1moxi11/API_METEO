@@ -1,4 +1,5 @@
 :root {
+    /* Définition des variables de couleur pour le thème */
     --color-background: #1f2b53;
     --color-primary: #00a8e8;
     --color-secondary: #007ea7;
@@ -7,9 +8,10 @@
     --gradient-background: linear-gradient(45deg, #293d7e, #055e9e);
     --dark-mode-bg: #333333;
     --dark-mode-primary: #4a90e2;
-}dark-mode-toggle
+}
 
 * {
+    /* Réinitialisation de base pour tous les éléments */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -17,6 +19,7 @@
 }
 
 body {
+    /* Style du corps de page en mode clair */
     background: var(--gradient-background);
     color: var(--color-text);
     min-height: 100vh;
@@ -25,11 +28,13 @@ body {
 }
 
 body.dark-mode {
+    /* Style appliqué en mode sombre */
     background: var(--dark-mode-bg);
     --color-primary: var(--dark-mode-primary);
 }
 
 .header {
+    /* En-tête centré avec largeur maximale */
     text-align: center;
     margin-bottom: 30px;
     position: relative;
@@ -39,6 +44,7 @@ body.dark-mode {
 }
 
 .header h1 {
+    /* Titre avec texte en dégradé */
     font-size: 2.5rem;
     background: linear-gradient(45deg, var(--color-primary), var(--color-accent));
     -webkit-background-clip: text;
@@ -50,6 +56,7 @@ body.dark-mode {
 }
 
 .dark-mode-toggle {
+    /* Bouton pour activer/désactiver le mode sombre */
     position: fixed;
     top: 20px;
     right: 20px;
@@ -71,12 +78,14 @@ body.dark-mode {
 }
 
 .dark-mode-toggle:hover {
+    /* Effet au survol du bouton de mode sombre */
     background: var(--color-primary);
     color: var(--color-background);
     transform: translateY(-2px);
 }
 
 .conteneur {
+    /* Conteneur principal avec effet de flou */
     background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     backdrop-filter: blur(15px);
@@ -89,6 +98,7 @@ body.dark-mode {
 }
 
 .formulaire-container {
+    /* Mise en page en grille pour les sections de formulaire */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
@@ -96,6 +106,7 @@ body.dark-mode {
 }
 
 .section-principale, .section-options {
+    /* Style des deux sections du formulaire */
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     padding: 25px;
@@ -106,7 +117,13 @@ body.dark-mode {
     background: rgba(255, 255, 255, 0.08);
 }
 
+input::placeholder {
+    /* Style de l’espace réservé dans les champs */
+    color: rgb(204, 204, 204);
+}
+
 .section-titre {
+    /* Titre de chaque section de formulaire */
     color: var(--color-accent);
     font-size: 1.2rem;
     margin-bottom: 20px;
@@ -117,11 +134,13 @@ body.dark-mode {
 }
 
 .groupe-formulaire {
+    /* Espacement autour d’un groupe de champ */
     position: relative;
     margin-bottom: 20px;
 }
 
 label {
+    /* Style des étiquettes de champ */
     display: block;
     margin-bottom: 8px;
     color: var(--color-accent);
@@ -130,6 +149,7 @@ label {
 }
 
 input, select {
+    /* Champs de saisie et menus déroulants */
     width: 100%;
     padding: 12px;
     background: rgba(255, 255, 255, 0.1);
@@ -141,6 +161,7 @@ input, select {
 }
 
 input:focus, select:focus {
+    /* Effet de mise au point */
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 15px rgba(0, 168, 232, 0.3);
@@ -148,6 +169,7 @@ input:focus, select:focus {
 }
 
 .indication {
+    /* Petits textes explicatifs */
     color: var(--color-secondary);
     font-size: 0.8rem;
     margin-top: 5px;
@@ -155,6 +177,7 @@ input:focus, select:focus {
 }
 
 .jours-selector {
+    /* Conteneur des boutons de jour */
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
@@ -162,6 +185,7 @@ input:focus, select:focus {
 }
 
 .jour-btn {
+    /* Boutons individuels pour les jours */
     padding: 10px 15px;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid var(--color-secondary);
@@ -174,6 +198,7 @@ input:focus, select:focus {
 }
 
 .jour-btn.active {
+    /* Bouton jour sélectionné */
     background: var(--color-primary);
     border-color: var(--color-primary);
     color: var(--color-background);
@@ -186,12 +211,14 @@ input:focus, select:focus {
 }
 
 .options-grid {
+    /* Mise en page des options (checkbox) */
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
 }
 
 .checkbox-group {
+    /* Groupe de checkbox stylisé */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -208,6 +235,7 @@ input:focus, select:focus {
 }
 
 .checkbox-group input[type="checkbox"] {
+    /* Style de la case à cocher */
     width: auto;
     margin: 0;
     cursor: pointer;
@@ -221,6 +249,7 @@ input:focus, select:focus {
 }
 
 button {
+    /* Bouton principal */
     width: 100%;
     padding: 15px;
     background: var(--color-primary);
@@ -239,6 +268,7 @@ button {
 }
 
 button::before {
+    /* Effet lumineux au survol */
     content: '';
     position: absolute;
     top: 0;
@@ -259,6 +289,7 @@ button:hover::before {
 }
 
 button:disabled {
+    /* Bouton désactivé */
     background: var(--color-secondary);
     cursor: not-allowed;
     transform: none;
@@ -266,22 +297,26 @@ button:disabled {
 }
 
 .resultats-container {
+    /* Conteneur des résultats masqué par défaut */
     display: none;
     margin-top: 30px;
 }
 
 .resultats-container.visible {
+    /* Affichage animé des résultats */
     display: block;
     animation: fadeIn 0.5s ease;
 }
 
 .loading {
+    /* Style du chargement */
     text-align: center;
     padding: 20px;
     color: var(--color-accent);
 }
 
 .spinner {
+    /* Animation de chargement */
     border: 3px solid rgba(255, 255, 255, 0.1);
     border-top: 3px solid var(--color-primary);
     border-radius: 50%;
@@ -292,6 +327,7 @@ button:disabled {
 }
 
 .infos-commune {
+    /* Carte d'information sur une commune */
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     padding: 20px;
@@ -305,20 +341,20 @@ button:disabled {
     margin-bottom: 15px;
 }
 
-
 select option {
+    /* Forcer les options à être noires */
     color: black !important;
-
 }
 
-
 .coords-grid {
+    /* Grille pour afficher les coordonnées */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
 }
 
 .coord-item {
+    /* Élément individuel de coordonnées */
     text-align: center;
     padding: 10px;
     background: rgba(255, 255, 255, 0.05);
@@ -326,12 +362,14 @@ select option {
 }
 
 .previsions-grid {
+    /* Grille pour les prévisions météo */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
 
 .carte-jour {
+    /* Carte météo pour un jour */
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     padding: 20px;
@@ -342,6 +380,7 @@ select option {
 }
 
 .carte-jour::before {
+    /* Ligne en haut de chaque carte jour */
     content: '';
     position: absolute;
     top: 0;
@@ -352,12 +391,14 @@ select option {
 }
 
 .carte-jour:hover {
+    /* Effet au survol des cartes */
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 168, 232, 0.2);
     border-color: var(--color-primary);
 }
 
 .jour-header {
+    /* En-tête d'une carte jour */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -381,6 +422,7 @@ select option {
 }
 
 .meteo-donnees {
+    /* Grille pour les données météo */
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -427,66 +469,58 @@ select option {
     font-size: 1.3rem;
 }
 
+/* Responsive 768px */
 @media (max-width: 768px) {
     .formulaire-container {
         grid-template-columns: 1fr;
     }
-    
+
     .jours-selector {
         justify-content: center;
     }
-    
+
     .coords-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .dark-mode-toggle {
         position: static;
         margin-top: 10px;
     }
-    
+
     .header h1 {
         font-size: 2rem;
     }
-    
+
     .conteneur {
         padding: 20px;
     }
-    
+
     .previsions-grid {
         grid-template-columns: 1fr;
     }
 }
 
+/* Responsive 480px */
 @media (max-width: 480px) {
     .meteo-donnees {
         grid-template-columns: 1fr;
     }
-    
+
     .jour-btn {
         min-width: 40px;
         padding: 8px 12px;
     }
 }
 
+/* Animation fadeIn */
 @keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(20px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
+/* Animation de rotation pour le spinner */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
