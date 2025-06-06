@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <!-- Lien vers la feuille de style CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <!-- En-tête avec le titre de la page et le bouton de mode sombre -->
     <div class="header">
@@ -21,11 +23,12 @@
                 <!-- Section pour la saisie de la localisation -->
                 <div class="section-principale">
                     <h3 class="section-titre">Localisation</h3>
-                    
+
                     <!-- Champ pour le code postal -->
                     <div class="groupe-formulaire">
                         <label for="code-postal">Code Postal :</label>
-                        <input type="text" id="code-postal" name="code-postal" placeholder="Entrez un code postal" pattern="[0-9]{5}" required>
+                        <input type="text" id="code-postal" name="code-postal" placeholder="Entrez un code postal"
+                            pattern="[0-9]{5}" required>
                         <small id="indication-code-postal" class="indication">Format : 5 chiffres</small>
                     </div>
 
@@ -56,29 +59,29 @@
                 <!-- Section pour les options d'affichage supplémentaires -->
                 <div class="section-options">
                     <h3 class="section-titre">Options d'affichage</h3>
-                    
+
                     <div class="options-grid">
                         <!-- Cases à cocher pour afficher des données météo spécifiques -->
                         <div class="checkbox-group">
                             <input type="checkbox" id="option-latitude" name="options" value="latitude">
                             <label for="option-latitude">Latitude décimale</label>
                         </div>
-                        
+
                         <div class="checkbox-group">
                             <input type="checkbox" id="option-longitude" name="options" value="longitude">
                             <label for="option-longitude">Longitude décimale</label>
                         </div>
-                        
+
                         <div class="checkbox-group">
                             <input type="checkbox" id="option-cumul-pluie" name="options" value="cumul-pluie">
                             <label for="option-cumul-pluie">Cumul de pluie (mm)</label>
                         </div>
-                        
+
                         <div class="checkbox-group">
                             <input type="checkbox" id="option-vent-moyen" name="options" value="vent-moyen">
                             <label for="option-vent-moyen">Vent moyen (km/h)</label>
                         </div>
-                        
+
                         <div class="checkbox-group">
                             <input type="checkbox" id="option-direction-vent" name="options" value="direction-vent">
                             <label for="option-direction-vent">Direction du vent (°)</label>
@@ -100,15 +103,28 @@
                 <div class="spinner"></div>
                 <p>Chargement des données météo...</p>
             </div>
-            
+
             <!-- Informations sur la commune sélectionnée -->
             <div id="infos-commune" class="infos-commune" style="display: none;"></div>
             <!-- Affichage des prévisions météo -->
             <div id="previsions-grid" class="previsions-grid"></div>
         </div>
     </div>
+    <!-- Dans le <head>, ajoutez ces liens -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Dans le conteneur des résultats, après <div id="infos-commune"> -->
+    <div id="carte-container" class="carte-container" style="display: none;">
+        <h3 class="section-titre">Carte de la région</h3>
+        <div id="carte" class="carte"></div>
+        <div class="carte-legende">
+            <p>🎯 Cliquez sur la carte pour changer de ville</p>
+        </div>
+    </div>
 
     <!-- Inclusion du script JavaScript -->
     <script src="app.js"></script>
 </body>
+
 </html>

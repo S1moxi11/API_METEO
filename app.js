@@ -412,3 +412,185 @@ function afficherMessageErreur(message) {
     // Afficher le conteneur
     container.classList.add("visible");
 }
+
+
+// Variable globale pour la carte
+let carte = null;
+let markerActuel = null;
+
+// Fonction pour initialiser la carte
+function initialiserCarte(latitude, longitude, nomCommune) {
+    const carteContainer = document.getElementById("carte-container");
+    const carteDiv = document.getElementById("carte");
+    
+    // Afficher le conteneur de la carte
+    carteContainer.style.display = "block";
+    
+    // Détruire la carte existante si elle existe
+    if (carte) {
+        carte.remove();
+    }
+    
+    // Créer la nouvelle carte
+    carte = L.map('carte').setView([latitude, longitude], 12);
+    
+    // Ajouter les tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(carte);
+    
+    // Ajouter un marqueur pour la commune actuelle
+    markerActuel = L.marker([latitude, longitude])
+        .addTo(carte)
+        .bindPopup(`<strong>${nomCommune}</strong><br>Ville sélectionnée`)
+        .openPopup();
+    
+    // Gestionnaire de clic sur la carte
+    carte.on('click', async function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        
+        // Rechercher la commune la plus proche
+        await rechercherCommuneParCoordonnees(lat, lng);
+    });
+}
+
+// Fonction pour rechercher une commune par coordonnées
+async function rechercherCommuneParCoordonnees(latitude, longitude) {
+    try {
+        showLoading();
+        
+        // API pour trouver la commune par coordonnées avec code postal
+        const url = `https://geo.api.gouv.fr/communes?lat=${latitude}&lon=${longitude}&fields=nom,code,centre,codesPostaux`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.length > 0) {
+            const commune = data[0];
+            
+            // Ajouter le code postal à la commune (prendre le premier s'il y en a plusieurs)
+            commune.codePostal = commune.codesPostaux && commune.codesPostaux.length > 0 
+                ? commune.codesPostaux[0] 
+                : null;
+            
+            // Mettre à jour le marqueur
+            if (markerActuel) {
+                carte.removeLayer(markerActuel);
+            }
+            
+            markerActuel = L.marker([latitude, longitude])
+                .addTo(carte)
+                .bindPopup(`<strong>${commune.nom}</strong><br>Code postal: ${commune.codePostal || 'N/A'}<br><em>Cliquez pour sélectionner</em>`)
+                .openPopup();
+            
+            // Ajouter un événement de clic sur le marqueur pour sélectionner la commune
+            markerActuel.on('click', function() {
+                selectionnerNouvelleCommune(commune);
+            });
+            
+        } else {
+            console.log("Aucune commune trouvée à ces coordonnées");
+        }
+        
+    } catch (error) {
+        console.error("Erreur lors de la recherche de commune:", error);
+    } finally {
+        hideLoading();
+    }
+}
+
+// Fonction pour sélectionner une nouvelle commune
+async function selectionnerNouvelleCommune(commune) {
+    try {
+        showLoading();
+        
+        // Mettre à jour les champs du formulaire
+        const codePostalInput = document.getElementById("code-postal");
+        const communeSelect = document.getElementById("selection-commune");
+        
+        // Rechercher d'abord toutes les communes avec ce code postal
+        if (commune.codePostal && Array.isArray(commune.codePostal)) {
+            // Prendre le premier code postal s'il y en a plusieurs
+            codePostalInput.value = commune.codePostal[0];
+            await rechercherCommunes(commune.codePostal[0]);
+        } else if (commune.codePostal) {
+            codePostalInput.value = commune.codePostal;
+            await rechercherCommunes(commune.codePostal);
+        }
+        
+        // Attendre que le select soit rempli puis sélectionner la commune
+        setTimeout(async () => {
+            const options = communeSelect.querySelectorAll('option');
+            let communeTrouvee = false;
+            
+            for (let option of options) {
+                if (option.value === commune.code) {
+                    communeSelect.value = commune.code;
+                    communeTrouvee = true;
+                    break;
+                }
+            }
+            
+            if (communeTrouvee) {
+                // Activer le bouton de recherche et lancer la météo
+                const boutonRecherche = document.getElementById("bouton-recherche");
+                boutonRecherche.disabled = false;
+                
+                // Lancer directement la recherche météo
+                await rechercheMeteo(commune.code);
+            } else {
+                // Si la commune n'est pas trouvée dans le select, essayer directement avec le code INSEE
+                await rechercheMeteo(commune.code);
+            }
+            
+        }, 800);
+        
+    } catch (error) {
+        console.error("Erreur lors de la sélection de la commune:", error);
+        hideLoading();
+    }
+}
+
+// Modifier la fonction afficherResultats pour inclure la carte
+function afficherResultats(data) {
+    const container = document.getElementById("resultats-container");
+    const previsionsGrid = document.getElementById("previsions-grid");
+    const infosCommune = document.getElementById("infos-commune");
+    
+    // Affichage des informations de commune si les coordonnées sont demandées
+    const showLatitude = document.getElementById("option-latitude").checked;
+    const showLongitude = document.getElementById("option-longitude").checked;
+    
+    if (showLatitude || showLongitude) {
+        afficherInfosCommune(infosCommune, showLatitude, showLongitude);
+    } else {
+        infosCommune.style.display = "none";
+    }
+    
+    // Initialiser la carte si une commune est sélectionnée
+    if (communeActuelle && communeActuelle.coordinates) {
+        const coords = communeActuelle.coordinates;
+        const latitude = coords.coordinates ? coords.coordinates[1] : 0;
+        const longitude = coords.coordinates ? coords.coordinates[0] : 0;
+        
+        if (latitude && longitude) {
+            initialiserCarte(latitude, longitude, communeActuelle.nom);
+        }
+    }
+    
+    // Nettoyage de la grille des prévisions
+    previsionsGrid.innerHTML = "";
+    
+    // Affichage des prévisions selon le nombre de jours sélectionné
+    const maxJours = Math.min(nombreJours, data.forecast.length);
+    
+    for (let i = 0; i < maxJours; i++) {
+        const prevision = data.forecast[i];
+        const carteJour = creerCarteJour(prevision, i);
+        previsionsGrid.appendChild(carteJour);
+    }
+    
+    // Affichage du conteneur de résultats
+    container.classList.add("visible");
+}
